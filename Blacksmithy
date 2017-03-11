@@ -3,10 +3,30 @@ PROGRAM Blacksmithy;
 PROCEDURE Blacksmithing;
 Begin
 
+    if FindType($13E4,BackPack) = 0 then
+    begin
+        UOSay(Chr(39)+'craftcreate 1');
+        Wait(100);
+        WaitTargetType($1BF2);
+        UseType($1EBC,$0000);
+        Wait(100);
+        WaitMenu('Tinkering','Other Tools');
+        Wait(100);
+        WaitMenu('Other Tools','(9)');
+        Wait(100);
+        if FindType($13E4,$5C4B17A3) > 0 then
+        begin
+            Grab(FindItem,1);
+            Wait(300);
+        end;
+    end;
+
     if FindType($13E4,BackPack) > 0 then
     begin
-        WaitTargetObject(FindType($1BF2,BackPack));
-        UseObject(FindType($13E4,BackPack));
+        UOSay(Chr(39)+'craftcreate 0');
+        Wait(100);
+        WaitTargetType($1BF2);
+        UseType($13E4,$0000);
         Wait(100);
     end;
     
@@ -14,12 +34,14 @@ Begin
     begin
         if GetSkillValue('Blacksmithing') < 26.5 then
         begin
+
             WaitMenu('Blacksmithing','Weapons');
             Wait(100);
             WaitMenu('Weapons','Maces & Hammers');
             Wait(100);
             WaitMenu('Maces & Hammers','Mace');
             Wait(2700);
+            UseType($097B,$0000);
         end;
     end;
     
@@ -33,6 +55,7 @@ Begin
             Wait(100);
             WaitMenu('Swords & Blades','Skining Knife');
             Wait(2700);
+            UseType($097B,$0000);
         end;
     end;
     
@@ -40,12 +63,14 @@ Begin
     begin
         if GetSkillValue('Blacksmithing') < 85.0 then
         begin
+            Wait(100);
             WaitMenu('Blacksmithing','Weapons');
             Wait(100);
             WaitMenu('Weapons','Spears & Forks');
             Wait(100);
             WaitMenu('Spears & Forks','Short Spear');
             Wait(2700);
+            UseType($097B,$0000);
         end;
     end;
     
@@ -59,14 +84,13 @@ Begin
             Wait(100);
             WaitMenu('Plate Mail','Plate Gorget');
             Wait(2700);
+            UseType($097B,$0000);
         end;
     end;
 
 End;
 
 BEGIN
-    UOSay(Chr(39)+'craftcreate 0');
-    Wait(3200);
     repeat
         Blacksmithing;
     until false
