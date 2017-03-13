@@ -288,13 +288,8 @@ Begin
             end;
             if FindTypesArrayEx([TypeGC,TypeNS,TypeGI,TypeSS,TypeMR,TypeBP,TypeBM,TypeGA,TypeSA,TypeDrop1,TypeDrop2,TypeDrop3,TypeDrop4,TypeDrop5,TypeDrop6,TypeDrop7,TypeDrop8,TypeDrop9,TypeDrop10,TypeDrop11,TypeDrop12,TypeDrop13,TypeDrop14,TypeDrop15],[ColorDefault],[BackPack],false) > 0 then
             begin
-	    	repeat
-            	    if FindTypesArrayEx([TypeGC,TypeNS,TypeGI,TypeSS,TypeMR,TypeBP,TypeBM,TypeGA,TypeSA,TypeDrop1,TypeDrop2,TypeDrop3,TypeDrop4,TypeDrop5,TypeDrop6,TypeDrop7,TypeDrop8,TypeDrop9,TypeDrop10,TypeDrop11,TypeDrop12,TypeDrop13,TypeDrop14,TypeDrop15],[ColorDefault],[BackPack],false) > 0 then
-            	    begin
-                        MoveItem(FindItem,0,BoxReagents,0,0,0);
-                        Wait(300);
-		    end;
-		until FindCount = 0;
+                MoveItem(FindItem,0,BoxReagents,0,0,0);
+                Wait(300);
             end;
         end;
     end;
