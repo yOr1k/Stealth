@@ -2,7 +2,6 @@ PROGRAM Blacksmithy;
 
 PROCEDURE Blacksmithing;
 Begin
-
     if FindType($13E4,BackPack) = 0 then
     begin
         UOSay(Chr(39)+'craftcreate 1');
@@ -12,7 +11,7 @@ Begin
         Wait(100);
         WaitMenu('Tinkering','Other Tools');
         Wait(100);
-        WaitMenu('Other Tools','(9)');
+        WaitMenu('Other Tools','Smithy'+Chr(39)+'s Hammer');
         Wait(100);
         if FindType($13E4,$5C4B17A3) > 0 then
         begin
@@ -20,7 +19,6 @@ Begin
             Wait(300);
         end;
     end;
-
     if FindType($13E4,BackPack) > 0 then
     begin
         UOSay(Chr(39)+'craftcreate 0');
@@ -29,12 +27,10 @@ Begin
         UseType($13E4,$0000);
         Wait(100);
     end;
-    
     if GetSkillValue('Blacksmithing') > 25.0 then
     begin
         if GetSkillValue('Blacksmithing') < 26.5 then
         begin
-
             WaitMenu('Blacksmithing','Weapons');
             Wait(100);
             WaitMenu('Weapons','Maces & Hammers');
@@ -44,7 +40,6 @@ Begin
             UseType($097B,$0000);
         end;
     end;
-    
     if GetSkillValue('Blacksmithing') > 26.5 then
     begin
         if GetSkillValue('Blacksmithing') < 50.0 then
@@ -58,7 +53,6 @@ Begin
             UseType($097B,$0000);
         end;
     end;
-    
     if GetSkillValue('Blacksmithing') > 50.0 then
     begin
         if GetSkillValue('Blacksmithing') < 85.0 then
@@ -73,7 +67,6 @@ Begin
             UseType($097B,$0000);
         end;
     end;
-    
     if GetSkillValue('Blacksmithing') > 85.0 then
     begin
         if GetSkillValue('Blacksmithing') < 100.0 then
@@ -87,7 +80,6 @@ Begin
             UseType($097B,$0000);
         end;
     end;
-
 End;
 
 BEGIN
