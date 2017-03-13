@@ -28,27 +28,6 @@ TypeBM  = $0F7B;
 TypeGA  = $0F84;
 TypeSA  = $0F8C;
 
-ColorDefault = $0000;
-
-ColorBlackRock = $0455;
-ColorMythril   = $052D;
-ColorHoly      = $084D;
-ColorGolden    = $06B7;
-ColorVerite    = $01CB;
-ColorValorite  = $0253;
-ColorBloodRock = $04C2;
-
-ColorAgapite    = $0400;
-ColorRose       = $0676;
-ColorSilver     = $0482;
-ColorShadow     = $0322;
-ColorMerkite    = $02C3;
-ColorBronze     = $01BF;
-ColorCopper     = $0289;
-ColorDullCopper = $0347;
-ColorOldCopper  = $0590;
-ColorRusty      = $0750;
-
 TypeDrop1  = $0F24;
 TypeDrop2  = $0F2E;
 TypeDrop3  = $0F21;
@@ -71,6 +50,27 @@ TypeEnemy3 = $0032;
 TypeEnemy4 = $001A;
 TypeEnemy5 = $0018;
 TypeEnemy6 = $0039;
+
+ColorBlackRock = $0455;
+ColorMythril   = $052D;
+ColorHoly      = $084D;
+ColorGolden    = $06B7;
+ColorVerite    = $01CB;
+ColorValorite  = $0253;
+ColorBloodRock = $04C2;
+
+ColorAgapite    = $0400;
+ColorRose       = $0676;
+ColorSilver     = $0482;
+ColorShadow     = $0322;
+ColorMerkite    = $02C3;
+ColorBronze     = $01BF;
+ColorCopper     = $0289;
+ColorDullCopper = $0347;
+ColorOldCopper  = $0590;
+ColorRusty      = $0750;
+
+ColorDefault = $0000;
 
 HouseX = 1963;
 HouseY = 317;
