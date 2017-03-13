@@ -84,10 +84,10 @@ BoxReagents  = $57DCABB4;
 BoxKatana    = $57DCAC90;
 BoxHeater    = $57DCABE2;
 
-MineX1 = 1930;
-MineX2 = 1942;
-MineY1 = 311;
-MineY2 = 324;
+CaveX1 = 1930;
+CaveX2 = 1942;
+CaveY1 = 311;
+CaveY2 = 324;
 
 OnDropOres = true;
 
@@ -184,8 +184,11 @@ Begin
     begin
         if FindTypesArrayEx([TypeEnemy1,TypeEnemy2,TypeEnemy3,TypeEnemy4,TypeEnemy5,TypeEnemy6],[$0000],[Ground],false) > 0 then
         begin
-            NewMoveXY(GetX(FindItem),GetY(FindItem),true,0,true);
-            Attack(FindItem);
+			if (not Paralyzed) then
+			begin
+				NewMoveXY(GetX(FindItem),GetY(FindItem),true,0,true);
+				Attack(FindItem);
+			end;
         end;
     end;
     if Life < (MaxLife-20) then
@@ -297,9 +300,9 @@ BEGIN
     FindDistance   := 15;
     FindVertical   := 15;
     repeat
-        for MyX := MineX1 to MineX2 do
+        for MyX := CaveX1 to CaveX2 do
         begin
-            for MyY := MineY1 to MineY2 do
+            for MyY := CaveY1 to CaveY2 do
             begin
                 TileS := ReadStaticsXY(MyX,MyY,WorldNum);
                 if TileS.StaticCount > 0 then
@@ -335,7 +338,7 @@ BEGIN
                                 TargetToTile(MyTile,MyX,MyY,GetZ(Self));
                                 Wait(3000);
                             end;
-                        until InJournalBetweenTimes('Здесь нет больше руды..',TimeStart,Now) <> -1;
+                        until InJournalBetweenTimes('«десь нет больше руды..',TimeStart,Now) <> -1;
                         if OnDropOres = true then
                         begin
                             DropOres;
