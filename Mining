@@ -184,11 +184,11 @@ Begin
     begin
         if FindTypesArrayEx([TypeEnemy1,TypeEnemy2,TypeEnemy3,TypeEnemy4,TypeEnemy5,TypeEnemy6],[$0000],[Ground],false) > 0 then
         begin
-	    if (not Paralyzed) then
-	    begin
-		NewMoveXY(GetX(FindItem),GetY(FindItem),true,0,true);
-		Attack(FindItem);
-	    end;
+        if (not Paralyzed) then
+        begin
+        NewMoveXY(GetX(FindItem),GetY(FindItem),true,0,true);
+        Attack(FindItem);
+        end;
         end;
     end;
     if Life < (MaxLife-20) then
@@ -219,49 +219,39 @@ Begin
             Wait(300);
             if Bandage = 0 then
             begin
-		UseObject(BoxOres);
-		Wait(300);
-		FindType(TypeBandage,BoxOres);
-		Grab(FindItem,10);
-		Wait(300);
+                UseObject(BoxOres);
+                Wait(300);
+                FindType(TypeBandage,BoxOres);
+                Grab(FindItem,10);
+                Wait(300);
             end;
             if Pickaxe = 0 then
             begin
-		UseObject(BoxOres);
-		Wait(300);
-		UseObject(FindType(TypePack,BoxOres));
-		Wait(300);
-		FindType(TypePickaxe,FindItem);
-		Grab(FindItem,1);
-		Wait(300);
-		UseObject(FindType(TypeFood,BoxOres));
-		Wait(3200);
-            	if FindTypesArrayEx([TypeGC,TypeNS,TypeGI,TypeSS,TypeMR,TypeBP,TypeBM,TypeGA,TypeSA,TypeDrop1,TypeDrop2,TypeDrop3,TypeDrop4,TypeDrop5,TypeDrop6,TypeDrop7,TypeDrop8,TypeDrop9,TypeDrop10,TypeDrop11,TypeDrop12,TypeDrop13,TypeDrop14,TypeDrop15],[ColorDefault],[BackPack],false) > 0 then
-            	begin
-	    	    repeat
-            	        if FindTypesArrayEx([TypeGC,TypeNS,TypeGI,TypeSS,TypeMR,TypeBP,TypeBM,TypeGA,TypeSA,TypeDrop1,TypeDrop2,TypeDrop3,TypeDrop4,TypeDrop5,TypeDrop6,TypeDrop7,TypeDrop8,TypeDrop9,TypeDrop10,TypeDrop11,TypeDrop12,TypeDrop13,TypeDrop14,TypeDrop15],[ColorDefault],[BackPack],false) > 0 then
-            	        begin
-                            MoveItem(FindItem,0,BoxReagents,0,0,0);
-                            Wait(300);
-		        end;
-		     until FindCount = 0;
-                end;
+                UseObject(BoxOres);
+                Wait(300);
+                UseObject(FindType(TypePack,BoxOres));
+                Wait(300);
+                FindType(TypePickaxe,FindItem);
+                Grab(FindItem,1);
+                Wait(300);
+                UseObject(FindType(TypeFood,BoxOres));
+                Wait(3200);
             end;
             if Katana = 0 then
             begin
-		UseObject(BoxKatana);
-		Wait(300);
-		FindType(TypeKatana,BoxKatana);
-		Equip(RhandLayer,FindItem);
-		Wait(300);
+                UseObject(BoxKatana);
+                Wait(300);
+                FindType(TypeKatana,BoxKatana);
+                Equip(RhandLayer,FindItem);
+                Wait(300);
             end;
             if Heater = 0 then
             begin
-		UseObject(BoxHeater);
-		Wait(300);
-		FindType(TypeHeater,BoxHeater);
-		Equip(LhandLayer,FindItem);
-		Wait(300);
+                UseObject(BoxHeater);
+                Wait(300);
+                FindType(TypeHeater,BoxHeater);
+                Equip(LhandLayer,FindItem);
+                Wait(300);
             end;
         end;
     end;
