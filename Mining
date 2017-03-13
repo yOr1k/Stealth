@@ -219,39 +219,39 @@ Begin
             Wait(300);
             if Bandage = 0 then
             begin
-               UseObject(BoxOres);
-               Wait(300);
-               FindType(TypeBandage,BoxOres);
-               Grab(FindItem,10);
-               Wait(300);
+				UseObject(BoxOres);
+				Wait(300);
+				FindType(TypeBandage,BoxOres);
+				Grab(FindItem,10);
+				Wait(300);
             end;
             if Pickaxe = 0 then
             begin
-               UseObject(BoxOres);
-               Wait(300);
-               UseObject(FindType(TypePack,BoxOres));
-               Wait(300);
-               FindType(TypePickaxe,FindItem);
-               Grab(FindItem,1);
-               Wait(300);
-               UseObject(FindType(TypeFood,BoxOres));
-               Wait(3200);
+				UseObject(BoxOres);
+				Wait(300);
+				UseObject(FindType(TypePack,BoxOres));
+				Wait(300);
+				FindType(TypePickaxe,FindItem);
+				Grab(FindItem,1);
+				Wait(300);
+				UseObject(FindType(TypeFood,BoxOres));
+				Wait(3200);
             end;
             if Katana = 0 then
             begin
-               UseObject(BoxKatana);
-               Wait(300);
-               FindType(TypeKatana,BoxKatana);
-               Equip(RhandLayer,FindItem);
-               Wait(300);
+				UseObject(BoxKatana);
+				Wait(300);
+				FindType(TypeKatana,BoxKatana);
+				Equip(RhandLayer,FindItem);
+				Wait(300);
             end;
             if Heater = 0 then
             begin
-               UseObject(BoxHeater);
-               Wait(300);
-               FindType(TypeHeater,BoxHeater);
-               Equip(LhandLayer,FindItem);
-               Wait(300);
+				UseObject(BoxHeater);
+				Wait(300);
+				FindType(TypeHeater,BoxHeater);
+				Equip(LhandLayer,FindItem);
+				Wait(300);
             end;
         end;
     end;
