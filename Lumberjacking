@@ -1,7 +1,7 @@
 PROGRAM Lumberjacking;
 
 VAR
-MyX,MyY,MyTile:Word;
+MyX,MyY,MyTile:Integer;
 TimeStart:TDateTime;
 TileS:TStaticCell;
 
@@ -27,22 +27,6 @@ TypeBP  = $0F7A;
 TypeBM  = $0F7B;
 TypeGA  = $0F84;
 TypeSA  = $0F8C;
-
-TypeDrop1  = $0F24;
-TypeDrop2  = $0F2E;
-TypeDrop3  = $0F21;
-TypeDrop4  = $0F23;
-TypeDrop5  = $0F2F;
-TypeDrop6  = $0F28;
-TypeDrop7  = $0F22;
-TypeDrop8  = $0F27;
-TypeDrop9  = $0F29;
-TypeDrop10 = $0F30;
-TypeDrop11 = $0F2D;
-TypeDrop12 = $0F25;
-TypeDrop13 = $0F2A;
-TypeDrop14 = $0F2B;
-TypeDrop15 = $0F2C;
 
 TypeEnemy1 = $0191;
 TypeEnemy2 = $002F;
@@ -84,9 +68,9 @@ BoxReagents  = $635635F8;
 BoxKatana    = $635635EA;
 BoxHeater    = $635635ED;
 
-ForestX1 = 1950;
+ForestX1 = 1970;
 ForestX2 = 2000;
-ForestY1 = 350;
+ForestY1 = 370;
 ForestY2 = 400;
 
 OnDropLogs = true;
@@ -236,6 +220,33 @@ Begin
                 Wait(300);
                 UseObject(FindType(TypeFood,BoxLogs));
                 Wait(3200);
+                if (GetX(Self) = HouseX) and (GetY(Self) = HouseY) then
+                begin
+                    UseObject(BoxMain);
+                    Wait(300);
+                    if FindType(TypeLog,BackPack) > 0 then
+                    begin
+                        repeat
+                            if FindType(TypeLog,BackPack) > 0 then
+                            begin
+                                MoveItem(FindItem,0,BoxLogs,0,0,0);
+                                Wait(300);
+                            end;
+                        until FindCount = 0;
+                    end;
+                    UseObject(BoxReagents);
+                    Wait(300);
+                    if FindTypesArrayEx([TypeGC,TypeNS,TypeGI,TypeSS,TypeMR,TypeBP,TypeBM,TypeGA,TypeSA],[ColorDefault],[BackPack],false) > 0 then
+                    begin
+                        repeat
+                            if FindTypesArrayEx([TypeGC,TypeNS,TypeGI,TypeSS,TypeMR,TypeBP,TypeBM,TypeGA,TypeSA],[ColorDefault],[BackPack],false) > 0 then
+                            begin
+                                MoveItem(FindItem,0,BoxReagents,0,0,0);
+                                Wait(300);
+                            end;
+                        until FindCount = 0;
+                    end;
+                end;
             end;
             if Katana = 0 then
             begin
@@ -276,7 +287,7 @@ Begin
                     end;
                 until FindCount = 0;
             end;
-            if FindTypesArrayEx([TypeGC,TypeNS,TypeGI,TypeSS,TypeMR,TypeBP,TypeBM,TypeGA,TypeSA,TypeDrop1,TypeDrop2,TypeDrop3,TypeDrop4,TypeDrop5,TypeDrop6,TypeDrop7,TypeDrop8,TypeDrop9,TypeDrop10,TypeDrop11,TypeDrop12,TypeDrop13,TypeDrop14,TypeDrop15],[ColorDefault],[BackPack],false) > 0 then
+            if FindTypesArrayEx([TypeGC,TypeNS,TypeGI,TypeSS,TypeMR,TypeBP,TypeBM,TypeGA,TypeSA],[ColorDefault],[BackPack],false) > 0 then
             begin
                 MoveItem(FindItem,0,BoxReagents,0,0,0);
                 Wait(300);
@@ -308,7 +319,7 @@ BEGIN
                 if TileS.StaticCount > 0 then
                 begin
                     MyTile := TileS.Statics[0].Tile;
-                    if (MyTile > 3275) and (MyTile < 3305) then
+                    if (MyTile > 3277) and (MyTile < 3302) then
                     begin
                         repeat
                             if Dead = true then
