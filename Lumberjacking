@@ -1,0 +1,351 @@
+PROGRAM Lumberjacking;
+
+VAR
+MyX,MyY,MyTile:Word;
+TimeStart:TDateTime;
+TileS:TStaticCell;
+
+CONST
+TypeLog     = $1BE0;
+TypeBandage = $0E21;
+TypeHatchet = $0F43;
+TypeKatana  = $13FF;
+TypeHeater  = $1B76;
+TypePack    = $0E76;
+TypeFood    = $097B;
+TypeCorpse  = $2006;
+TypeCross   = $0005;
+TypeRobe    = $1F03;
+TypeChest   = $0E42;
+
+TypeGC  = $0EED;
+TypeNS  = $0F88;
+TypeGI  = $0F85;
+TypeSS  = $0F8D;
+TypeMR  = $0F86;
+TypeBP  = $0F7A;
+TypeBM  = $0F7B;
+TypeGA  = $0F84;
+TypeSA  = $0F8C;
+
+TypeDrop1  = $0F24;
+TypeDrop2  = $0F2E;
+TypeDrop3  = $0F21;
+TypeDrop4  = $0F23;
+TypeDrop5  = $0F2F;
+TypeDrop6  = $0F28;
+TypeDrop7  = $0F22;
+TypeDrop8  = $0F27;
+TypeDrop9  = $0F29;
+TypeDrop10 = $0F30;
+TypeDrop11 = $0F2D;
+TypeDrop12 = $0F25;
+TypeDrop13 = $0F2A;
+TypeDrop14 = $0F2B;
+TypeDrop15 = $0F2C;
+
+TypeEnemy1 = $0191;
+TypeEnemy2 = $002F;
+TypeEnemy3 = $0008;
+TypeEnemy4 = $0032;
+TypeEnemy5 = $001A;
+TypeEnemy6 = $0018;
+TypeEnemy7 = $0039;
+
+ColorLog1  = $084D; // Брёвна дерева Богов +
+ColorLog2  = $0455; // Брёвна мореного дерева +
+ColorLog3  = $052D; // Брёвна гномьего дерева +
+ColorLog4  = $0253; // Брёвна ледяного дерева +
+ColorLog5  = $01CB; // Брёвна эльфийского дерева +
+ColorLog6  = $04C2; // Брёвна драконьего дерева +
+ColorLog7  = $0400; // Брёвна искристого дерева -
+ColorLog8  = $0676; // Душистые бревна -
+ColorLog9  = $06B7; // Брёвна красного дерева +
+ColorLog10 = $0482; // Брёвна серного дерева +
+ColorLog11 = $01BF; // Брёвна звонкого дерева -
+ColorLog12 = $0289; // Брёвна мягкого дерева -
+ColorLog13 = $02C3; // Брёвна орочьего дерева -
+ColorLog14 = $0322; // Брёвна жжёного дерева -
+ColorLog15 = $0347; // Брёвна масляничного дерева -
+ColorLog16 = $0590; // Гибкие брёвна -
+ColorLog17 = $0750; // Смолистые брёвна +
+
+ColorDefault = $0000;
+
+HouseX = 2007;
+HouseY = 354;
+
+ResurrectionX = 2036;
+ResurrectionY = 223;
+
+BoxMain      = $635635D0;
+BoxLogs      = $63563602;
+BoxReagents  = $635635F8;
+BoxKatana    = $635635EA;
+BoxHeater    = $635635ED;
+
+ForestX1 = 1950;
+ForestX2 = 2000;
+ForestY1 = 350;
+ForestY2 = 400;
+
+OnDropLogs = true;
+
+FUNCTION Bandage:Byte;
+Begin
+    FindType(TypeBandage,BackPack);
+    Result := FindCount;
+End;
+
+FUNCTION Hatchet:Byte;
+Begin
+    FindType(TypeHatchet,BackPack);
+    Result := FindCount;
+End;
+
+FUNCTION Katana:Byte;
+Begin
+    if (FindType(TypeKatana,Self) = 0) and (FindType(TypeKatana,BackPack) = 0) then
+    begin
+        Result := 0;
+        Wait(300);
+    end else
+    begin
+        Result := 1;
+        Wait(300);
+    end;
+End;
+
+FUNCTION Heater:Byte;
+Begin
+    if (FindType(TypeHeater,Self) = 0) and (FindType(TypeHeater,BackPack) = 0) then
+    begin
+        Result := 0;
+        Wait(300);
+    end else
+    begin
+        Result := 1;
+        Wait(300);
+    end;
+End;
+
+FUNCTION MaxWeight:Word;
+Begin
+    Result := Str*3-20;
+End;
+
+PROCEDURE Resurrection;
+Begin
+    repeat
+        NewMoveXY(ResurrectionX,ResurrectionY,true,0,true);
+    until (GetX(Self) = ResurrectionX) and (GetY(Self) = ResurrectionY);
+    if (GetX(Self) = ResurrectionX) and (GetY(Self) = ResurrectionY) then
+    begin
+        if FindType(TypeCross,Ground) > 0 then
+        begin
+            repeat
+                UseObject(FindItem);
+                Wait(3200);
+            until Dead = false;
+        end;
+        if Dead = false then
+        begin
+            if ObjAtLayer(RobeLayer) = 0 then
+            begin
+                UseObject(BackPack);
+                Wait(300);
+                Equip(RobeLayer,FindType(TypeRobe,BackPack));
+                Wait(300);
+            end;
+            if FindType(TypeChest,Ground) > 0 then
+            begin
+                UseObject(FindItem);
+                Wait(1000);
+                if FindType(TypeBandage,FindItem) > 0 then
+                begin
+                    Grab(FindItem,0);
+                    Wait(300);
+                    if FindType(TypeBandage,BackPack) > 0 then
+                    begin
+                        repeat
+                            UOSay(Chr(39)+'pc heal self');
+                            Wait(8300);
+                        until FindType(TypeBandage,BackPack) = 0;
+                    end;
+                end;
+            end; 
+        end;
+    end;
+End;
+
+PROCEDURE AttackEnemy;
+Begin
+    if Life < MaxLife then
+    begin
+        if FindTypesArrayEx([TypeEnemy1,TypeEnemy2,TypeEnemy3,TypeEnemy4,TypeEnemy5,TypeEnemy6,TypeEnemy7],[$0000,$07D6],[Ground],false) > 0 then
+        begin
+            if (not Paralyzed) then
+            begin
+                NewMoveXY(GetX(FindItem),GetY(FindItem),true,0,true);
+                Attack(FindItem);
+            end;
+        end;
+    end;
+    if Life < (MaxLife-20) then
+    begin
+        UOSay(Chr(39)+'pc heal self');
+        Wait(8300);
+    end;
+End;
+
+PROCEDURE LootItems;
+Begin
+    Ignore(FindTypeEx(TypeLog,ColorDefault,Ground,false));
+    if FindTypesArrayEx([TypeLog,TypeGC,TypeNS,TypeGI,TypeSS,TypeMR,TypeBP,TypeBM,TypeGA,TypeSA],[ColorDefault,ColorLog1,ColorLog2,ColorLog3,ColorLog4,ColorLog5,ColorLog6,ColorLog9,ColorLog10,ColorLog17],[Ground],false) <> 0 then
+    begin
+        NewMoveXY(GetX(FindItem),GetY(FindItem),true,0,true);
+        Grab(FindItem,0);
+    end;
+End;
+
+PROCEDURE GrabItems;
+Begin
+    if (Bandage = 0) or (Hatchet = 0) or (Katana = 0) or (Heater = 0) then
+    begin
+        NewMoveXY(HouseX,HouseY,true,0,true);
+        if (GetX(Self) = HouseX) and (GetY(Self) = HouseY) then
+        begin
+            UseObject(BoxMain);
+            Wait(300);
+            if Bandage = 0 then
+            begin
+                UseObject(BoxLogs);
+                Wait(300);
+                FindType(TypeBandage,BoxLogs);
+                Grab(FindItem,10);
+                Wait(300);
+            end;
+            if Hatchet = 0 then
+            begin
+                UseObject(BoxLogs);
+                Wait(300);
+                UseObject(FindType(TypePack,BoxLogs));
+                Wait(300);
+                FindType(TypeHatchet,FindItem);
+                Grab(FindItem,1);
+                Wait(300);
+                UseObject(FindType(TypeFood,BoxLogs));
+                Wait(3200);
+            end;
+            if Katana = 0 then
+            begin
+                UseObject(BoxKatana);
+                Wait(300);
+                FindType(TypeKatana,BoxKatana);
+                Equip(RhandLayer,FindItem);
+                Wait(300);
+            end;
+            if Heater = 0 then
+            begin
+                UseObject(BoxHeater);
+                Wait(300);
+                FindType(TypeHeater,BoxHeater);
+                Equip(LhandLayer,FindItem);
+                Wait(300);
+            end;
+        end;
+    end;
+End;
+
+PROCEDURE DropItems;
+Begin
+    if Weight > MaxWeight then
+    begin
+        NewMoveXY(HouseX,HouseY,true,0,true);
+        if (GetX(Self) = HouseX) and (GetY(Self) = HouseY) then
+        begin
+            UseObject(BoxMain);
+            Wait(300);
+            if FindType(TypeLog,BackPack) > 0 then
+            begin
+                repeat
+                    if FindType(TypeLog,BackPack) > 0 then
+                    begin
+                        MoveItem(FindItem,0,BoxLogs,0,0,0);
+                        Wait(300);
+                    end;
+                until FindCount = 0;
+            end;
+            if FindTypesArrayEx([TypeGC,TypeNS,TypeGI,TypeSS,TypeMR,TypeBP,TypeBM,TypeGA,TypeSA,TypeDrop1,TypeDrop2,TypeDrop3,TypeDrop4,TypeDrop5,TypeDrop6,TypeDrop7,TypeDrop8,TypeDrop9,TypeDrop10,TypeDrop11,TypeDrop12,TypeDrop13,TypeDrop14,TypeDrop15],[ColorDefault],[BackPack],false) > 0 then
+            begin
+                MoveItem(FindItem,0,BoxReagents,0,0,0);
+                Wait(300);
+            end;
+        end;
+    end;
+End;
+
+PROCEDURE DropLogs;
+Begin
+    if FindTypesArrayEx([TypeLog],[ColorDefault,ColorLog7,ColorLog8,ColorLog11,ColorLog12,ColorLog13,ColorLog14,ColorLog15,ColorLog16],[BackPack],false) > 0 then
+    begin
+        Drop(FindItem,999,GetX(Self),GetY(Self),GetZ(Self));
+        Wait(300);
+    end;
+End;
+
+BEGIN
+    SetPauseScriptOnDisconnectStatus(true);
+    MoveThroughNPC := 0;
+    FindDistance   := 15;
+    FindVertical   := 15;
+    repeat
+        for MyX := ForestX1 to ForestX2 do
+        begin
+            for MyY := ForestY1 to ForestY2 do
+            begin
+                TileS := ReadStaticsXY(MyX,MyY,WorldNum);
+                if TileS.StaticCount > 0 then
+                begin
+                    MyTile := TileS.Statics[0].Tile;
+                    if (MyTile > 3275) and (MyTile < 3305) then
+                    begin
+                        repeat
+                            if Dead = true then
+                            begin
+                                Resurrection;                         
+                            end;
+                            if Dead = false then
+                            begin
+                                GrabItems;
+                                LootItems;
+                                DropItems;
+                                AttackEnemy;
+                            end;
+                            NewMoveXY(MyX,MyY,true,1,true);
+                            TimeStart := Now;
+                            if FindType(TypeHatchet,BackPack) > 0 then
+                            begin
+                                if TargetPresent then
+                                CancelTarget;
+                                begin
+                                    UseObject(FindType(TypeHatchet,BackPack));
+                                    WaitForTarget(1000);
+                                end;
+                            end;
+                            if TargetPresent then
+                            begin
+                                TargetToTile(MyTile,MyX,MyY,GetZ(Self));
+                                Wait(3000);
+                            end;
+                        until InJournalBetweenTimes('[202] Здесь нет больше дерева для вырубки.',TimeStart,Now) <> -1;
+                        if OnDropLogs = true then
+                        begin
+                            DropLogs;
+                        end;
+                    end;
+                end;
+            end;
+        end;
+    until false
+END.
